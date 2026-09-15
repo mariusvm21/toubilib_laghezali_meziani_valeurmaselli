@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 
-use psr\Container\ContainerInterface;
+use Psr\Container\ContainerInterface;
 use toubilib\adapters\actions\AnnulerRendezVousAction;
 use toubilib\application\ports\api\ServiceRendezVousInterface;
 
