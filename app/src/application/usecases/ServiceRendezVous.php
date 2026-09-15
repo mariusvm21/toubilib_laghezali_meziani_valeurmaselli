@@ -6,6 +6,7 @@ namespace toubilib\application\usecases;
 use toubilib\application\dto\RendezVousDTO;
 use toubilib\application\ports\api\ServiceRendezVousInterface;
 use toubilib\application\ports\spi\RendezVousRepositoryInterface;
+use toubilib\application\exceptions\RendezVousNotFoundException;
 
 class ServiceRendezVous implements ServiceRendezVousInterface
 {
@@ -17,7 +18,11 @@ class ServiceRendezVous implements ServiceRendezVousInterface
 
     public function annuler(string $id): RendezVousDTO
     {
-        $rdv = $this->repository->getRendezVousById($id);
+        try {
+            $rdv = $this->repository->getRendezVousById($id);
+        } catch (RendezVousNotFoundException $e) {
+            throw $e;
+        }
         $rdv->annuler();
         $this->repository->save($rdv);
 

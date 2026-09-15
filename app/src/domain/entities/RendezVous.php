@@ -18,6 +18,8 @@ class RendezVous
         private string $patientId,
         private string $motifVisite,
         private \DateTimeImmutable $dateHeureDebut,
+        private \DateTimeImmutable $dateHeureFin,
+        private \DateTimeImmutable $dateCreation,
         private int $duree,
         private int $statut = self::PLANIFIE,
     ){
@@ -26,20 +28,17 @@ class RendezVous
         $this->patientId = $patientId;
         $this->motifVisite = $motifVisite;
         $this->dateHeureDebut = $dateHeureDebut;
+        $this->dateHeureFin = $dateHeureFin;
+        $this->dateCreation = $dateCreation;
         $this->duree = $duree;
         $this->statut = $statut;
     } 
     
 
     public function annuler(): void{
-        if ($this->statut !== self::PLANIFIE) {
+        if ($this->statut == self::HONORE) {
             throw new StatutRendezVousException(
-                "le rendez-vous n'est pas planifie"
-            );
-        }
-        if ($this->dateHeureDebut < new \DateTimeImmutable()) {
-            throw new StatutRendezVousException(
-                "le rendez-vous est passe"
+                "le rendez-vous n'est peux pas etre annulé car il est déjà honoré"
             );
         }
         $this->statut = self::ANNULE;

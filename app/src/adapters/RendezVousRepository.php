@@ -33,6 +33,8 @@ class RendezVousRepository implements RendezVousRepositoryInterface
             $row['patient_id'],
             (string) $row['motif_visite'],
             new \DateTimeImmutable($row['date_heure_debut']),
+            new \DateTimeImmutable($row['date_heure_fin']),
+            new \DateTimeImmutable($row['date_creation']),
             (int) $row['duree'],
             (int) $row['status'],
         );
