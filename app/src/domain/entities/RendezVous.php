@@ -13,7 +13,7 @@ class RendezVous
     public const IGNORE   = 3;
 
     public function __construct(
-    private string $id,
+        private string $id,
         private string $praticienId,
         private string $patientId,
         private string $motifVisite,
@@ -21,7 +21,13 @@ class RendezVous
         private int $duree,
         private int $statut = self::PLANIFIE,
     ){
-
+        $this->id = $id;
+        $this->praticienId = $praticienId;
+        $this->patientId = $patientId;
+        $this->motifVisite = $motifVisite;
+        $this->dateHeureDebut = $dateHeureDebut;
+        $this->duree = $duree;
+        $this->statut = $statut;
     } 
     
 

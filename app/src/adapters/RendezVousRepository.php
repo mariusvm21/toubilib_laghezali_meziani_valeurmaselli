@@ -11,6 +11,7 @@ class RendezVousRepository implements RendezVousRepositoryInterface
 {
     public function __construct(private \PDO $pdo)
     {
+        $this->pdo = $pdo;
     }
 
     public function getRendezVousById(string $id): RendezVous
