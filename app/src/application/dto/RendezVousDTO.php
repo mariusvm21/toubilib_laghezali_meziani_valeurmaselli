@@ -11,7 +11,7 @@ class RendezVousDTO
         public string $patientId,
         public string $dateHeureDebut,
         public string $motifVisite,
-        public int    $duree,
+        public int $duree,
         public int $statut,
     ) {
     }
