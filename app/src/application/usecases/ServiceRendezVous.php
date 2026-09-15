@@ -9,9 +9,11 @@ use toubilib\application\ports\spi\RendezVousRepositoryInterface;
 
 class ServiceRendezVous implements ServiceRendezVousInterface
 {
-    public function __construct(
-        private RendezVousRepositoryInterface $repository,
-    ) {}
+    private RendezVousRepositoryInterface $repository;
+
+    public function __construct(RendezVousRepositoryInterface $repository) {
+        $this->repository = $repository;
+    }
 
     public function annuler(string $id): RendezVousDTO
     {

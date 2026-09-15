@@ -1,10 +1,11 @@
 <?php
 declare(strict_types=1);
 
-return function ($app, $action) {
+use toubilib\adapters\actions\AnnulerRendezVousAction;
 
-    $app->post('/rdv/{id}/annulation', $action)
-        ->setName('rdv_annuler');
+return function ($app) {
+
+    $app->post('/rdv/{id}/annulation', AnnulerRendezVousAction::class)->setName('rdv_annuler');
 
     return $app;
 };

@@ -11,9 +11,10 @@ use toubilib\domain\exceptions\StatutRendezVousException;
 
 class AnnulerRendezVousAction
 {
-    public function __construct(
-        private ServiceRendezVousInterface $service,
-    ) {
+    private ServiceRendezVousInterface $service;
+    
+    public function __construct(ServiceRendezVousInterface $service) {
+        $this->service = $service;
     }
 
     public function __invoke(Request $request, Response $response, array $args): Response
