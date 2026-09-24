@@ -4,6 +4,10 @@ namespace toubilib\domain\entities;
 
 class Praticien{
 
+    public const HORRAIRES_PREMIER_RDV = [8, 0];
+    public const HORRAIRES_DERNIER_RDV = [19, 0];
+    public const JOUR_TRAVAIL = [1, 2, 3, 4, 5];
+
     public function __construct(
         private int $id,
         private string $nom,
@@ -27,5 +31,21 @@ class Praticien{
             }
         }
         return false;
+    }
+
+    public function jourHorrairePossible(\DateTimeImmutable $date): bool {
+        $jour_rdv = (int) $date->format('N');
+        $premier_rdv = $date->setTime(...Praticien::HORRAIRES_PREMIER_RDV);
+        $dernier_rdv = $date->setTime(...Praticien::HORRAIRES_DERNIER_RDV);
+
+        if (
+            $date < $premier_rdv ||
+            $date > $dernier_rdv ||
+            !in_array($jour_rdv, Praticien::JOUR_TRAVAIL, true)
+        ) {
+            return false;
+        }
+
+        return true;
     }
 }
