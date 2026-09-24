@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace toubilib\application\validators;
 
-use toubilib\application\dto\RendezVousDTO;
+use toubilib\application\dto\CreeRDVDTO;
 use toubilib\application\exceptions\ValidationException;
 use toubilib\application\ports\spi\PatientRepositoryInterface;
 use toubilib\application\ports\spi\PraticienRepositoryInterface;
@@ -15,7 +15,7 @@ class RdvValidator
         private PatientRepositoryInterface $patientRepository,
     ) {}
 
-    public function validate(RendezVousDTO $dto): void
+    public function validate(CreeRDVDTO $dto): void
     {
         $errors = [];
 
