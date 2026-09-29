@@ -6,11 +6,10 @@ use toubilib\adapters\RendezVousRepository;
 use toubilib\application\ports\spi\RendezVousRepositoryInterface;
 use toubilib\application\usecases\ServiceRendezVous;
 use toubilib\application\ports\api\ServiceRendezVousInterface;
+use toubilib\adapters\PraticienRepository;
+use toubilib\application\ports\spi\PraticienRepositoryInterface;
 use toubilib\application\ports\api\ServicePraticienInterface;
 use toubilib\application\usecases\ServicePraticien;
-use toubilib\application\ports\spi\PraticienRepositoryInterface;
-use toubilib\adapters\PraticienRepository;
-
 return [
     PDO::class => function (ContainerInterface $c) {
         return new PDO(
