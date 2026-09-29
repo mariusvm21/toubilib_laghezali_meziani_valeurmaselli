@@ -8,6 +8,7 @@ use toubilib\application\ports\api\ServiceRendezVousInterface;
 use toubilib\adapters\actions\ListerPraticiensAction;
 use toubilib\adapters\actions\GetPraticienAction;
 use toubilib\application\ports\api\ServicePraticienInterface;
+use toubilib\adapters\actions\GetRendezVousAction;
 
 
 return [
@@ -22,4 +23,7 @@ return [
     GetPraticienAction::class => function (ContainerInterface $c) {
         return new GetPraticienAction($c->get(ServicePraticienInterface::class));
     },
+        GetRendezVousAction::class => function (ContainerInterface $c) {
+        return new GetRendezVousAction($c->get(ServiceRendezVousInterface::class));
+    }
 ];

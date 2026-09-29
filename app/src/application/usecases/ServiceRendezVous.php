@@ -16,8 +16,9 @@ class ServiceRendezVous implements ServiceRendezVousInterface
     private RendezVousRepositoryInterface $repository;
     private RdvValidator $validator;
 
-    public function __construct(RendezVousRepositoryInterface $repository) {
+    public function __construct(RendezVousRepositoryInterface $repository, RdvValidator $validator) {
         $this->repository = $repository;
+        $this->validator = $validator;
 
     }
 
