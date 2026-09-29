@@ -35,6 +35,31 @@ class Praticien
         return $this->motifs;
     }
 
+    public function getNom(): string
+    {
+        return $this->nom;
+    }
+
+    public function getPrenom(): string
+    {
+        return $this->prenom;
+    }
+
+    public function getVille(): string
+    {
+        return $this->ville;
+    }
+
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    public function getSpecialiteId(): int
+    {
+        return $this->specialite_id;
+    }
+
     public function checkMotif(string $ParamMotif): bool
     {
         foreach ($this->motifs as $motif) {

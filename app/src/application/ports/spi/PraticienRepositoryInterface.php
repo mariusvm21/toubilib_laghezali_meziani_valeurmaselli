@@ -6,4 +6,5 @@ namespace toubilib\application\ports\spi;
 interface PraticienRepositoryInterface
 {
     public function existe(string $id): bool;
+    public function getPraticien(): array;
 }
