@@ -45,4 +45,23 @@ class ServiceRendezVous implements ServiceRendezVousInterface
         $this->validator->validate($dto);
         return $dto;
     }
+
+    public function getDetailsRendezVous(string $id): RendezVousDTO {
+        try {
+            $rdv = $this->repository->getRendezVousById($id);
+        } catch {
+            (RendezVousNotFoundException $e) {
+                throw $e;
+            }
+        }
+        return new RendezVousDTO(
+            $rdv->getId(),
+            $rdv->getPraticienId(),
+            $rdv->getPatientId(),
+            $rdv->getDateHeureDebut()->format('Y-m-d H:i:s'),
+            $rdv->getMotifVisite(),
+            $rdv->getDuree(),
+            $rdv->getStatut()
+        );
+    }
 }

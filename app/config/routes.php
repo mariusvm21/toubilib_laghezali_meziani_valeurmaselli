@@ -6,6 +6,7 @@ use toubilib\adapters\actions\AnnulerRendezVousAction;
 return function ($app) {
 
     $app->post('/rdv/{id}/annulation', AnnulerRendezVousAction::class)->setName('rdv_annuler');
-
+    $app->get('/rendez-vous/{id}', GetRendezVousAction::class);
+    
     return $app;
 };
