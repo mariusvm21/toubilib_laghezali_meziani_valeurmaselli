@@ -14,20 +14,67 @@ class Praticien
     public const JOUR_TRAVAIL = [1, 2, 3, 4, 5];
 
     public function __construct(
-        private int $id,
+        private string $id,
         private string $nom,
         private string $prenom,
         private string $ville,
         private string $email,
         private string $telephone,
         private int $specialite_id,
-        private int $structure_id,
+        private ?string $structure_id,
+        private string $titre = 'Dr.',
+        private ?Specialite $specialite = null,
         private array $motifs = [self::RDV_CI, self::RDV_C0, self::RDV_CS],
     ) {}
 
-    public function getId(): int
+    public function getId(): string
     {
         return $this->id;
+    }
+
+    public function getNom(): string
+    {
+        return $this->nom;
+    }
+
+    public function getPrenom(): string
+    {
+        return $this->prenom;
+    }
+
+    public function getVille(): string
+    {
+        return $this->ville;
+    }
+
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    public function getTelephone(): string
+    {
+        return $this->telephone;
+    }
+
+    public function getSpecialiteId(): int
+    {
+        return $this->specialite_id;
+    }
+
+    public function getStructureId(): ?string
+    {
+        return $this->structure_id;
+    }
+
+    public function getTitre(): string
+    {
+        return $this->titre;
+    }
+
+    public function getSpecialite(): ?Specialite
+    {
+        return $this->specialite;
     }
 
     public function getMotifs(): array
