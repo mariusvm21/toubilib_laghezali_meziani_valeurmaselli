@@ -9,7 +9,6 @@ use toubilib\application\ports\api\ServiceRendezVousInterface;
 use toubilib\adapters\actions\ListerPraticiensAction;
 use toubilib\adapters\actions\GetPraticienAction;
 use toubilib\application\ports\api\ServicePraticienInterface;
-use toubilib\adapters\actions\GetRendezVousAction;
 
 
 return [
