@@ -17,7 +17,7 @@ class RendezVousRepository implements RendezVousRepositoryInterface
     public function getRendezVousById(string $id): RendezVous
     {
         $stmt = $this->pdo->prepare(
-            'SELECT id, praticien_id, patient_id, motif_visite, date_heure_debut, duree, status
+            'SELECT id, praticien_id, patient_id, motif_visite, date_heure_debut, date_heure_fin, date_creation, duree, status
              FROM rdv WHERE id = :id'
         );
         $stmt->execute(['id' => $id]);

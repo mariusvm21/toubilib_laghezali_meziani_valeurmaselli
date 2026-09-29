@@ -12,7 +12,6 @@ class GetRendezVousAction
 {
     private ServiceRendezVousInterface $service;
 
-    // injection du service metier via constructeur
     public function __construct(ServiceRendezVousInterface $service)
     {
         $this->service = $service;
@@ -20,7 +19,7 @@ class GetRendezVousAction
 
     public function __invoke(Request $request, Response $response, array $args): Response
     {
-        $id = $args['id']; // identifiant recup depuis l'url
+        $id = $args['id'];
 
         try {
             $dto = $this->service->getDetailsRendezVous($id);
@@ -28,13 +27,13 @@ class GetRendezVousAction
             $response->getBody()->write(json_encode($dto->toArray()));
             return $response
                 ->withHeader('Content-Type', 'application/json')
-                ->withStatus(200); // 200 (OK)
+                ->withStatus(200);
                 
         } catch (RendezVousNotFoundException $e) {
             $response->getBody()->write(json_encode(['error' => 'rendez-vous introuvable']));
             return $response
                 ->withHeader('Content-Type', 'application/json')
-                ->withStatus(404); // 404 (Not Found)
+                ->withStatus(404);
         }
     }
 }

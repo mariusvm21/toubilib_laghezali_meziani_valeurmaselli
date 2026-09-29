@@ -12,7 +12,6 @@ class PgRendezVousRepository implements RendezVousRepositoryInterface
 {
     private PDO $pdo;
 
-    // objet PDO injecté au moment de l'exécution
     public function __construct(PDO $pdo)
     {
         $this->pdo = $pdo;
@@ -28,7 +27,6 @@ class PgRendezVousRepository implements RendezVousRepositoryInterface
             throw new RendezVousNotFoundException("le rendez-vous avec l'id $id n'existe pas.");
         }
 
-        // on instancie et on retourne l'entité métier
         return new RendezVous(
             $row['id'],
             $row['praticien_id'],
@@ -42,8 +40,4 @@ class PgRendezVousRepository implements RendezVousRepositoryInterface
         );
     }
 
-    public function save(RendezVous $rdv): void
-    {
-        // ... (À implémenter pour sauvegarder les modifications, par exemple pour l'annulation)
-    }
 }
