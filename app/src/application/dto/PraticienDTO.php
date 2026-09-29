@@ -6,7 +6,7 @@ namespace toubilib\application\dto;
 class PraticienDTO
 {
     public function __construct(
-        public int $id,
+        public string $id,
         public string $nom,
         public string $prenom,
         public string $specialite_id,
