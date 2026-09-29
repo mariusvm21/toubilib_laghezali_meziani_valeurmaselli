@@ -9,6 +9,7 @@ use toubilib\application\ports\spi\RendezVousRepositoryInterface;
 use toubilib\application\exceptions\RendezVousNotFoundException;
 use toubilib\application\dto\CreeRDVDTO;
 use toubilib\application\validators\RdvValidator;
+use toubilib\application\exceptions\ValidationException;
 
 class ServiceRendezVous implements ServiceRendezVousInterface
 {
@@ -49,10 +50,8 @@ class ServiceRendezVous implements ServiceRendezVousInterface
     public function getDetailsRendezVous(string $id): RendezVousDTO {
         try {
             $rdv = $this->repository->getRendezVousById($id);
-        } catch {
-            (RendezVousNotFoundException $e) {
-                throw $e;
-            }
+        } catch (RendezVousNotFoundException $e) {
+            throw $e;
         }
         return new RendezVousDTO(
             $rdv->getId(),
