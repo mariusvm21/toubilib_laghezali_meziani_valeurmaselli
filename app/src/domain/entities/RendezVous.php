@@ -22,7 +22,7 @@ class RendezVous
         private \DateTimeImmutable $dateCreation,
         private int $duree,
         private int $statut = self::PLANIFIE,
-    ){
+    ) {
         $this->id = $id;
         $this->praticienId = $praticienId;
         $this->patientId = $patientId;
@@ -32,10 +32,11 @@ class RendezVous
         $this->dateCreation = $dateCreation;
         $this->duree = $duree;
         $this->statut = $statut;
-    } 
-    
+    }
 
-    public function annuler(): void{
+
+    public function annuler(): void
+    {
         if ($this->statut == self::HONORE) {
             throw new StatutRendezVousException(
                 "le rendez-vous n'est peux pas etre annulé car il est déjà honoré"
@@ -44,11 +45,56 @@ class RendezVous
         $this->statut = self::ANNULE;
     }
 
-    public function getId(): string { return $this->id; }
-    public function getPraticienId(): string { return $this->praticienId; }
-    public function getPatientId(): string { return $this->patientId; }
-    public function getDateHeureDebut(): \DateTimeImmutable { return $this->dateHeureDebut; }
-    public function getMotifVisite(): string { return $this->motifVisite; }
-    public function getDuree(): int { return $this->duree; }
-    public function getStatut(): int { return $this->statut; }
+    public function getId(): string
+    {
+        return $this->id;
+    }
+    public function getPraticienId(): string
+    {
+        return $this->praticienId;
+    }
+    public function getPatientId(): string
+    {
+        return $this->patientId;
+    }
+    public function getDateHeureDebut(): \DateTimeImmutable
+    {
+        return $this->dateHeureDebut;
+    }
+    public function getMotifVisite(): string
+    {
+        return $this->motifVisite;
+    }
+    public function getDuree(): int
+    {
+        return $this->duree;
+    }
+    public function getStatut(): int
+    {
+        return $this->statut;
+    }
+
+    public static function cree(Praticien $praticien, string $patientId, string $motifVisite, \DateTimeImmutable $date): self
+    {
+        if (!$praticien->checkMotif($motifVisite)) {
+            throw new \InvalidArgumentException("Le motif n'existe pas ou n'est pas géré par ce praticien.");
+        }
+        if (!$praticien->jourHorrairePossible($date)) {
+            throw new \InvalidArgumentException("Jour ou horaire impossible pour ce praticien.");
+        }
+
+        $duree = $praticien->getDureePourMotif($motifVisite);
+
+        $dateFin = $date->add(new \DateInterval("PT{$duree}M"));
+        return new self(
+            \Ramsey\Uuid\Uuid::uuid4()->toString(),
+            $praticien->getId(),
+            $patientId,
+            $motifVisite,
+            $date,
+            $dateFin,
+            new \DateTimeImmutable(),
+            $duree
+        );
+    }
 }

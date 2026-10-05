@@ -27,7 +27,4 @@ return [
     GetPraticienAction::class => function (ContainerInterface $c) {
         return new GetPraticienAction($c->get(ServicePraticienInterface::class));
     },
-        GetRendezVousAction::class => function (ContainerInterface $c) {
-        return new GetRendezVousAction($c->get(ServiceRendezVousInterface::class));
-    }
 ];
