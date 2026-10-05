@@ -25,7 +25,7 @@ class Praticien
         private ?string $structure_id,
         private string $titre = 'Dr.',
         private ?Specialite $specialite = null,
-        private array $motifs = [self::RDV_CI, self::RDV_C0, self::RDV_CS],
+        private array $motifs = ['CI', 'CO', 'CS'],
     ) {}
 
     public function getId(): string
@@ -123,9 +123,9 @@ class Praticien
             throw new \InvalidArgumentException("motif existe pas");
         }
         return match ($motif) {
-            'RDV_CI' => self::RDV_CI,
-            'RDV_C0' => self::RDV_C0,
-            'RDV_CS' => self::RDV_CS,
+            'CI' => self::RDV_CI,
+            'CO' => self::RDV_C0,
+            'CS' => self::RDV_CS,
             default => 20,
         };
     }
