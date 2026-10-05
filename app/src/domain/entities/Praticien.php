@@ -12,6 +12,7 @@ class Praticien
     public const HORRAIRES_PREMIER_RDV = [8, 0];
     public const HORRAIRES_DERNIER_RDV = [19, 0];
     public const JOUR_TRAVAIL = [1, 2, 3, 4, 5];
+    private array $agenda = [];
 
     public function __construct(
         private string $id,
@@ -82,6 +83,11 @@ class Praticien
         return $this->motifs;
     }
 
+    public function setAgenda(array $agenda): void
+    {
+        $this->agenda = $agenda;
+    }
+
 
 
     public function checkMotif(string $ParamMotif): bool
@@ -124,4 +130,17 @@ class Praticien
         };
     }
 
+        public function rdvdemandRdvCompatibleAgenda(\DateTimeImmutable $rdvdemand, int $duree): bool
+    {
+        $fin = $rdvdemand->add(new \DateInterval("PT{$duree}M"));
+        foreach ($this->agenda as $rdv) {
+            if ($rdv->getStatut() === RendezVous::ANNULE) {
+                continue;
+            }
+            if ($rdv->chevauche($rdvdemand, $fin)) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

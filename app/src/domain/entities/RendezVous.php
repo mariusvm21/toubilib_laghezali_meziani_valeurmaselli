@@ -12,23 +12,25 @@ class RendezVous
     public const HONORE   = 2;
     public const IGNORE   = 3;
 
+
     public function __construct(
         private string $id,
         private string $praticienId,
         private string $patientId,
         private string $motifVisite,
-        private \DateTimeImmutable $dateHeureDebut,
-        private \DateTimeImmutable $dateHeureFin,
+        private \DateTimeImmutable $datedeb,
+        private \DateTimeImmutable $datef,
         private \DateTimeImmutable $dateCreation,
         private int $duree,
         private int $statut = self::PLANIFIE,
+        
     ) {
         $this->id = $id;
         $this->praticienId = $praticienId;
         $this->patientId = $patientId;
         $this->motifVisite = $motifVisite;
-        $this->dateHeureDebut = $dateHeureDebut;
-        $this->dateHeureFin = $dateHeureFin;
+        $this->datedeb = $datedeb;
+        $this->datef = $datef;
         $this->dateCreation = $dateCreation;
         $this->duree = $duree;
         $this->statut = $statut;
@@ -57,9 +59,9 @@ class RendezVous
     {
         return $this->patientId;
     }
-    public function getDateHeureDebut(): \DateTimeImmutable
+    public function getdatedeb(): \DateTimeImmutable
     {
-        return $this->dateHeureDebut;
+        return $this->datedeb;
     }
     public function getMotifVisite(): string
     {
@@ -74,17 +76,20 @@ class RendezVous
         return $this->statut;
     }
 
+
+
     public static function cree(Praticien $praticien, string $patientId, string $motifVisite, \DateTimeImmutable $date): self
     {
         if (!$praticien->checkMotif($motifVisite)) {
-            throw new \InvalidArgumentException("Le motif n'existe pas ou n'est pas géré par ce praticien.");
+            throw new \InvalidArgumentException("Le motif n'existe pas");
         }
         if (!$praticien->jourHorrairePossible($date)) {
-            throw new \InvalidArgumentException("Jour ou horaire impossible pour ce praticien.");
+            throw new \InvalidArgumentException("impossible");
         }
-
         $duree = $praticien->getDureePourMotif($motifVisite);
-
+        if (!$praticien->rdvdemandRdvCompatibleAgenda($date,$duree)){
+            throw new \InvalidArgumentException("sa rentre pas dans l agenda du praticien");
+        }
         $dateFin = $date->add(new \DateInterval("PT{$duree}M"));
         return new self(
             \Ramsey\Uuid\Uuid::uuid4()->toString(),
@@ -97,4 +102,11 @@ class RendezVous
             $duree
         );
     }
+
+    public function chevauche(\DateTimeImmutable $datevx, \DateTimeImmutable $finvx): bool
+    {
+        return $datevx < $this->datef && $finvx > $this->datedeb;
+    }
+
+
 }
