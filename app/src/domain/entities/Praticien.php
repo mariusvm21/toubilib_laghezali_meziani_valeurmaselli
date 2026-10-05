@@ -130,7 +130,7 @@ class Praticien
         };
     }
 
-        public function rdvdemandRdvCompatibleAgenda(\DateTimeImmutable $rdvdemand, int $duree): bool
+    public function rdvdemandRdvCompatibleAgenda(\DateTimeImmutable $rdvdemand, int $duree): bool
     {
         $fin = $rdvdemand->add(new \DateInterval("PT{$duree}M"));
         foreach ($this->agenda as $rdv) {
@@ -143,4 +143,6 @@ class Praticien
         }
         return true;
     }
+
+    
 }
