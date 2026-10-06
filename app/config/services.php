@@ -32,7 +32,7 @@ return [
     ServiceRendezVousInterface::class => function (ContainerInterface $c) {
         return new ServiceRendezVous(
             $c->get(RendezVousRepositoryInterface::class),
-            $c->get(RdvValidator::class) // On injecte le validateur ici !
+            $c->get(RdvValidator::class)
         );
     },
     PraticienRepositoryInterface::class => function (ContainerInterface $c) {
