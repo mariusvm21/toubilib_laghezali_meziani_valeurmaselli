@@ -5,6 +5,7 @@ use toubilib\adapters\actions\AnnulerRendezVousAction;
 use toubilib\adapters\actions\ListerPraticiensAction;
 use toubilib\adapters\actions\GetPraticienAction;
 use toubilib\adapters\actions\GetRendezVousAction;
+use toubilib\adapters\actions\CreerRendezVousAction;
 
 return function ($app) {
 
@@ -12,6 +13,7 @@ return function ($app) {
     $app->post('/rdv/{id}/annulation', AnnulerRendezVousAction::class)->setName('rdv_annuler');
     $app->get('/rendez-vous/{id}', GetRendezVousAction::class);
     $app->get('/praticien', ListerPraticiensAction::class);
+    $app->post('/rendez-vous', CreerRendezVousAction::class);
     
     return $app;
 };

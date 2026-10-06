@@ -6,20 +6,26 @@ namespace toubilib\application\usecases;
 use toubilib\application\dto\RendezVousDTO;
 use toubilib\application\ports\api\ServiceRendezVousInterface;
 use toubilib\application\ports\spi\RendezVousRepositoryInterface;
+use toubilib\application\ports\spi\PatientRepositoryInterface;
+use toubilib\application\ports\spi\PraticienRepositoryInterface;
 use toubilib\application\exceptions\RendezVousNotFoundException;
 use toubilib\application\dto\CreeRDVDTO;
 use toubilib\application\validators\RdvValidator;
 use toubilib\application\exceptions\ValidationException;
+use toubilib\domain\entities\RendezVous;
 
 class ServiceRendezVous implements ServiceRendezVousInterface
 {
     private RendezVousRepositoryInterface $repository;
     private RdvValidator $validator;
+    private PatientRepositoryInterface $patientRepository;
+    private PraticienRepositoryInterface $praticienRepository;
 
-    public function __construct(RendezVousRepositoryInterface $repository, RdvValidator $validator) {
+    public function __construct(RendezVousRepositoryInterface $repository, RdvValidator $validator, PatientRepositoryInterface $patientRepository, PraticienRepositoryInterface $praticienRepository) {
         $this->repository = $repository;
         $this->validator = $validator;
-
+        $this->patientRepository = $patientRepository;
+        $this->praticienRepository = $praticienRepository;
     }
 
     public function annuler(string $id): RendezVousDTO
@@ -43,11 +49,6 @@ class ServiceRendezVous implements ServiceRendezVousInterface
         );
     }
 
-    public function creerRDV(CreeRDVDTO $dto): CreeRDVDTO    {
-        $this->validator->validate($dto);
-        return $dto;
-    }
-
     public function getDetailsRendezVous(string $id): RendezVousDTO {
         try {
             $rdv = $this->repository->getRendezVousById($id);
@@ -63,5 +64,24 @@ class ServiceRendezVous implements ServiceRendezVousInterface
             $rdv->getDuree(),
             $rdv->getStatut()
         );
+    }
+
+    public function creerRDV(CreeRDVDTO $dto): CreeRDVDTO
+    {
+        $patient = $this->patientRepository->getById($dto->patientId);
+        
+        $dateRecherche = (new \DateTimeImmutable($dto->dateHeureDebut))->format('Y-m-d');
+        $praticien = $this->praticienRepository->getByIdAvecAgenda($dto->praticienId, $dateRecherche);
+
+        $rendezVous = RendezVous::cree(
+            $praticien,
+            $patient->getId(),
+            $dto->motifVisite,
+            new \DateTimeImmutable($dto->dateHeureDebut)
+        );
+
+        $this->repository->save($rendezVous);
+
+        return $dto;
     }
 }

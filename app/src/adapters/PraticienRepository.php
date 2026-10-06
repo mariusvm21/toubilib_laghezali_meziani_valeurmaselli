@@ -101,4 +101,40 @@ class PraticienRepository implements PraticienRepositoryInterface
 
         return $praticien;
     }
+
+    public function getByIdAvecAgenda(string $id, string $dateRecherche): \toubilib\domain\entities\Praticien
+    {
+        $praticien = $this->getPraticienById($id);
+
+        $stmt = $this->pdo->prepare("
+            SELECT id, praticien_id, patient_id, date_heure_debut, motif_visite, duree, status
+            FROM rdv
+            WHERE praticien_id = :id
+            AND date_heure_debut::date = :date_recherche
+        ");
+        
+        $stmt->execute([
+            'id' => $id,
+            'date_recherche' => $dateRecherche
+        ]);
+
+        $lignes = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+        $agenda = [];
+        foreach ($lignes as $ligne) {
+            $agenda[] = new \toubilib\core\domain\entities\RendezVous(
+                $ligne['id'],
+                $ligne['praticien_id'],
+                $ligne['patient_id'],
+                new \DateTimeImmutable($ligne['date_heure_debut']),
+                $ligne['motif_visite'],
+                (int)$ligne['duree'],
+                $ligne['statut']
+            );
+        }
+
+        $praticien->setAgenda($agenda);
+
+        return $praticien;
+    }
 }

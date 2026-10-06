@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Psr\Container\ContainerInterface;
 use toubilib\adapters\actions\AnnulerRendezVousAction;
 use toubilib\adapters\actions\GetRendezVousAction;
+use toubilib\adapters\actions\CreerRendezVousAction;
 use toubilib\application\ports\api\ServiceRendezVousInterface;
 use toubilib\adapters\actions\ListerPraticiensAction;
 use toubilib\adapters\actions\GetPraticienAction;
@@ -14,6 +15,10 @@ use toubilib\application\ports\api\ServicePraticienInterface;
 return [
     AnnulerRendezVousAction::class => function (ContainerInterface $c) {
         return new AnnulerRendezVousAction($c->get(ServiceRendezVousInterface::class));
+    },
+
+    CreerRendezVousAction::class => function (ContainerInterface $c) {
+        return new CreerRendezVousAction($c->get(ServiceRendezVousInterface::class));
     },
 
     GetRendezVousAction::class => function (ContainerInterface $c) {

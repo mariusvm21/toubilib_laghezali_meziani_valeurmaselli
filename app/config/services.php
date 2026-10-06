@@ -32,9 +32,12 @@ return [
     ServiceRendezVousInterface::class => function (ContainerInterface $c) {
         return new ServiceRendezVous(
             $c->get(RendezVousRepositoryInterface::class),
-            $c->get(RdvValidator::class) // On injecte le validateur ici !
+            $c->get(RdvValidator::class),
+            $c->get(PatientRepositoryInterface::class),
+            $c->get(PraticienRepositoryInterface::class)
         );
     },
+
     PraticienRepositoryInterface::class => function (ContainerInterface $c) {
         return new PraticienRepository($c->get(PDO::class));
     },

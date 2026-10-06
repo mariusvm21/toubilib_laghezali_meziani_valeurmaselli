@@ -42,10 +42,19 @@ class RendezVousRepository implements RendezVousRepositoryInterface
 
     public function save(RendezVous $rdv): void
     {
-        $stmt = $this->pdo->prepare('UPDATE rdv SET status = :status WHERE id = :id');
+        $stmt = $this->pdo->prepare("
+            INSERT INTO rdv (id, praticien_id, patient_id, date_heure_debut, motif_visite, duree, status)
+            VALUES (:id, :praticien_id, :patient_id, :date_heure, :motif, :duree, :status)
+        ");
+        
         $stmt->execute([
-            'status' => $rdv->getStatut(),
-            'id'     => $rdv->getId(),
+            'id' => $rdv->getId(),
+            'praticien_id' => $rdv->getPraticienId(),
+            'patient_id' => $rdv->getPatientId(),
+            'date_heure' => $rdv->getdatedeb()->format('Y-m-d H:i:s'),
+            'motif' => $rdv->getMotifVisite(),
+            'duree' => $rdv->getDuree(),
+            'status' => $rdv->getStatut()
         ]);
     }
 }

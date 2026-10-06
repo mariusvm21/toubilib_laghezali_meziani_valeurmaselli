@@ -3,7 +3,10 @@ declare(strict_types=1);
 
 namespace toubilib\application\ports\spi;
 
+use toubilib\domain\entities\Patient;
+
 interface PatientRepositoryInterface
 {
     public function existe(string $id): bool;
+    public function getById(string $id): Patient;
 }

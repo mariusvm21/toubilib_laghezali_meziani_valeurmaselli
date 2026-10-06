@@ -11,4 +11,5 @@ interface PraticienRepositoryInterface
     public function getPraticien(): array;
     public function getPraticienById(string $id): Praticien;
     public function getPraticienAvecRdvs(string $id): Praticien;
+    public function getByIdAvecAgenda(string $id, string $dateRecherche): Praticien;
 }
