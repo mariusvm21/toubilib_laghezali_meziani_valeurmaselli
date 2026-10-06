@@ -10,4 +10,5 @@ interface PraticienRepositoryInterface
     public function existe(string $id): bool;
     public function getPraticien(): array;
     public function getPraticienById(string $id): Praticien;
+    public function getPraticienAvecRdvs(string $id): Praticien;
 }
