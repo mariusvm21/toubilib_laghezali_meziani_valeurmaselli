@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace toubilib\application\usecases;
 
 use toubilib\application\dto\RendezVousDTO;
+use toubilib\application\dto\RendezVousDetailDTO;
 use toubilib\application\ports\api\ServiceRendezVousInterface;
 use toubilib\application\ports\spi\RendezVousRepositoryInterface;
 use toubilib\application\ports\spi\PatientRepositoryInterface;
@@ -42,27 +43,32 @@ class ServiceRendezVous implements ServiceRendezVousInterface
             $rdv->getId(),
             $rdv->getPraticienId(),
             $rdv->getPatientId(),
-            $rdv->getDateHeureDebut()->format('Y-m-d H:i:s'),
+            $rdv->getdatedebut()->format('Y-m-d H:i:s'),
             $rdv->getMotifVisite(),
             $rdv->getDuree(),
             $rdv->getStatut(),
         );
     }
 
-    public function getDetailsRendezVous(string $id): RendezVousDTO {
+    public function getDetailsRendezVous(string $id): RendezVousDetailDTO {
         try {
             $rdv = $this->repository->getRendezVousById($id);
+            $praticien = $this->praticienRepository->getPraticienById($rdv->getPraticienId());
+            $patient = $this->patientRepository->getById($rdv->getPatientId());
         } catch (RendezVousNotFoundException $e) {
             throw $e;
         }
-        return new RendezVousDTO(
+        return new RendezVousDetailDTO(
             $rdv->getId(),
             $rdv->getPraticienId(),
             $rdv->getPatientId(),
-            $rdv->getDateHeureDebut()->format('Y-m-d H:i:s'),
+            $rdv->getDateCreation()->format('Y-m-d H:i:s'),
+            $rdv->getdatedebut()->format('Y-m-d H:i:s'),
             $rdv->getMotifVisite(),
             $rdv->getDuree(),
-            $rdv->getStatut()
+            $rdv->getStatut(),
+            $praticien->getNom(),
+            $patient->getNom()
         );
     }
 

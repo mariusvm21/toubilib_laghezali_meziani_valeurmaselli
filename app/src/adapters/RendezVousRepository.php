@@ -51,7 +51,7 @@ class RendezVousRepository implements RendezVousRepositoryInterface
             'id' => $rdv->getId(),
             'praticien_id' => $rdv->getPraticienId(),
             'patient_id' => $rdv->getPatientId(),
-            'date_heure' => $rdv->getdatedeb()->format('Y-m-d H:i:s'),
+            'date_heure' => $rdv->getdatedebut()->format('Y-m-d H:i:s'),
             'motif' => $rdv->getMotifVisite(),
             'duree' => $rdv->getDuree(),
             'status' => $rdv->getStatut()

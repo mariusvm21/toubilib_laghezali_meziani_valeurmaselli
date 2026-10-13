@@ -59,7 +59,7 @@ class RendezVous
     {
         return $this->patientId;
     }
-    public function getdatedeb(): \DateTimeImmutable
+    public function getdatedebut(): \DateTimeImmutable
     {
         return $this->datedeb;
     }
@@ -74,6 +74,11 @@ class RendezVous
     public function getStatut(): int
     {
         return $this->statut;
+    }
+
+    public function getDateCreation(): \DateTimeImmutable
+    {
+        return $this->dateCreation;
     }
 
 
