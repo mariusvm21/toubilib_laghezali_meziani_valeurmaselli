@@ -12,4 +12,5 @@ interface ServicePraticienInterface
     public function listerPraticiens(): array;
 
     public function getPraticienDetail(string $id): PraticienDetailDTO;
+    public function getAgenda(string $praticienId, ?string $dateDebut, ?string $dateFin): array;
 }

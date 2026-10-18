@@ -49,6 +49,13 @@ class ServicePraticien implements ServicePraticienInterface
             $praticien->getVille(),
         );
     }
+
+    public function getAgenda(string $praticienId, ?string $dateDebut, ?string $dateFin): array
+    {
+        $date = $dateDebut ?? (new \DateTimeImmutable())->format('Y-m-d');
+        $praticien = $this->repository->getByIdAvecAgenda($praticienId, $date);
+        return $praticien->getAgenda() ?? [];
+    }
 }
 
 

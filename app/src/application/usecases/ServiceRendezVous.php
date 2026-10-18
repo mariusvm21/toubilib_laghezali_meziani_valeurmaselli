@@ -90,4 +90,22 @@ class ServiceRendezVous implements ServiceRendezVousInterface
 
         return $dto;
     }
+
+    public function getRdvsByPraticien(string $praticienId): array
+    {
+        $rdvs = $this->repository->getRdvsByPraticienId($praticienId);
+        $dtos = [];
+        foreach ($rdvs as $rdv) {
+            $dtos[] = new RendezVousDTO(
+                $rdv->getId(),
+                $rdv->getPraticienId(),
+                $rdv->getPatientId(),
+                $rdv->getdatedebut()->format('Y-m-d H:i:s'),
+                $rdv->getMotifVisite(),
+                $rdv->getDuree(),
+                $rdv->getStatut()
+            );
+        }
+        return $dtos;
+    }
 }

@@ -57,4 +57,30 @@ class RendezVousRepository implements RendezVousRepositoryInterface
             'status' => $rdv->getStatut()
         ]);
     }
+
+    public function getRdvsByPraticienId(string $praticienId): array
+    {
+        $stmt = $this->pdo->prepare("
+            SELECT * FROM rdv 
+            WHERE praticien_id = :praticien_id 
+            AND status = 'PREVU'
+        ");
+        $stmt->execute(['praticien_id' => $praticienId]);
+        $lignes = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+        $rdvs = [];
+        foreach ($lignes as $ligne) {
+            $rdv = new \toubilib\domain\entities\RendezVous(
+                $ligne['praticien_id'],
+                $ligne['patient_id'],
+                $ligne['motif_visite'],
+                new \DateTimeImmutable($ligne['date_heure_debut'])
+            );
+            $rdv->setId($ligne['id']);
+            
+            $rdvs[] = $rdv;
+        }
+
+        return $rdvs;
+    }
 }

@@ -18,13 +18,40 @@ class GetPraticienAction
 
     public function __invoke(Request $request, Response $response, array $args): Response
     {
+        $id = $args['id'];
+
         try {
             $dto = $this->service->getPraticienDetail($args['id']);
         } catch (PraticienNotFoundException $e) {
-            return $this->json($response, ['error' => $e->getMessage()], 404);
+            $errorData = [
+                'message' => '404 Not Found',
+                'exception' => [
+                    [
+                        'type' => 'PraticienNotFoundException',
+                        'code' => 404,
+                        'message' => $e->getMessage()
+                    ]
+                ]
+            ];
+            return $this->json($response, $errorData, 404);
         }
 
-        return $this->json($response, ['praticien' => $dto->toArray()], 200);
+        $data = [
+            'type' => 'ressource',
+            'praticien' => $dto->toArray(),
+            'links' => [
+                'self' => [
+                    'href' => '/praticiens/' . $id . '/'
+                ],
+                'agenda' => [
+                    'href' => '/praticiens/' . $id . '/agenda'
+                ],
+                'rdvs' => [
+                    'href' => '/praticiens/' . $id . '/rdvs'
+                ]
+            ]
+        ];
+        return $this->json($response, $data, 200);
     }
 
     private function json(Response $response, array $data, int $status): Response

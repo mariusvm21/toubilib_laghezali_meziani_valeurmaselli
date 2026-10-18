@@ -19,15 +19,43 @@ class AnnulerRendezVousAction
 
     public function __invoke(Request $request, Response $response, array $args): Response
     {
+        $id = $args['id'];
+
         try {
             $dto = $this->service->annuler($args['id']);
         } catch (RendezVousNotFoundException $e) {
-            return $this->json($response, ['error' => $e->getMessage()], 404);
+            $errorData = [
+                'message' => '404 Not Found',
+                'exception' => [
+                    ['type' => 'RendezVousNotFoundException', 'code' => 404, 'message' => $e->getMessage()]
+                ]
+            ];
+            return $this->json($response, $errorData, 404);
         } catch (StatutRendezVousException $e) {
-            return $this->json($response, ['error' => $e->getMessage()], 409);
+            $errorData = [
+                'message' => '409 Conflict',
+                'exception' => [
+                    ['type' => 'StatutRendezVousException', 'code' => 409, 'message' => $e->getMessage()]
+                ]
+            ];
+            return $this->json($response, $errorData, 409);
         }
+        $rdvData = $dto->toArray();
+        
+        $idPraticien = $rdvData['praticien_id'] ?? $rdvData['praticienId'] ?? '';
+        $idPatient = $rdvData['patient_id'] ?? $rdvData['patientId'] ?? '';
 
-        return $this->json($response, ['rendez-vous' => $dto->toArray()], 200);
+        $data = [
+            'type' => 'ressource',
+            'rendez_vous' => $rdvData,
+            'links' => [
+                'self' => ['href' => '/rdvs/' . $id . '/'],
+                'praticien' => ['href' => '/praticiens/' . $idPraticien . '/'],
+                'patient' => ['href' => '/patients/' . $idPatient . '/']
+            ]
+        ];
+
+        return $this->json($response, $data, 200);
     }
 
     private function json(Response $response, array $data, int $status): Response
